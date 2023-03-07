@@ -1,0 +1,76 @@
+1) download the code
+ git clone https://github.com/bernhardkaplan/nest-simulator.git
+
+# change into nest-simulator directory 
+cd nest-simulator/
+
+2) load the necessary modules including the gcc compiler, gsl library, ompi library, and python3
+module load cmake/3.21.3
+module load gcc/9.2.0
+module load gsl
+module load ompi/4.1.1/gnu-9.2.0
+module load python3
+
+3) run cmake to perform install configuration, you will need to change the "/home/rachel" path to the exact path where you have nest-sim downloaded to. 
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/rachel/nest-simulator -Dwith-python=ON -Dcythonize-pynest=ON -Dwith-gsl=ON -Dwith-readline=ON -Dwith-ltdl=OFF -Dwith-mpi=ON /home/rachel/nest-simulator
+
+4) compile and install the code
+make
+make install
+
+After successfully compiled and installed, then you can proceed to test the nest simulator using a fresh terminal. 
+At the command prompt, load the gcc and python3 modules
+# load the modules
+module load gcc/9.2.0
+module load python3
+
+# change into nest-sim directory where you have it built
+cd SCS_Work/Tickets/204176_NEST/nest-simulator/bin #I am using my own directory as example, but yours will be different
+./nest -h
+[INFO] [2023.3.2 15:23:37 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2023.3.2 15:23:37 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:231 @ Network::create_rngs_] : Deleting existing random number generators
+[INFO] [2023.3.2 15:23:37 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2023.3.2 15:23:37 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+usage: nest [options] [ - | file [file ...] ]
+  file1 file2 ... filen     read SLI code from file1 to filen in ascending order
+                            Quits with exit code 126 on error.
+  -   --batch               read SLI code from stdin/pipe.
+                            Quits with exit code 126 on error.
+  -c cmd                    Execute cmd and exit
+  -h  --help                print usage and exit
+  -v  --version             print version information and exit
+      --userargs=arg1:...   put user defined arguments in statusdict::userargs
+  -d  --debug               start in debug mode (implies --verbosity=ALL)
+      --verbosity=ALL       turn on all messages.
+      --verbosity=DEBUG|STATUS|INFO|WARNING|ERROR|FATAL
+                            show messages of this priority and above.
+      --verbosity=QUIET     turn off all messages.
+
+# Now we test nest with python3
+# you must use the python3 from 'module load python3'
+# before firing up python3, at the prompt, type
+export PYTHONPATH=/your/nest/location/nest-simulator/lib64/python3.8/site-packages
+module load python3
+python3
+Python 3.8.3 (default, Jul  2 2020, 16:21:59)
+[GCC 7.3.0] :: Anaconda, Inc. on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import nest
+[INFO] [2023.3.2 15:24:34 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2023.3.2 15:24:34 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:231 @ Network::create_rngs_] : Deleting existing random number generators
+[INFO] [2023.3.2 15:24:34 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2023.3.2 15:24:34 /home/support/lamx0031/SCS_Work/Tickets/204176_NEST/nest-simulator/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+
+  Copyright (C) 2004 The NEST Initiative
+  Version 2.12.0 Mar  2 2023 14:31:57
+
+This program is provided AS IS and comes with
+NO WARRANTY. See the file LICENSE for details.
+
+Problems or suggestions?
+  Visit http://www.nest-simulator.org
+
+Type 'nest.help()' to find out more about NEST.
+>>>
